@@ -104,9 +104,14 @@ namespace WebApiContrib.Core.Formatter.Csv
 
                         var _val = val.Value.ToString();
 
-                        //Check if the value contans a comma and place it in quotes if so
+                        // Escape existing quote characters
+
+                        //Check if the value contans a comma and surround it in quote characters if so
                         if (_val.Contains(","))
-                            _val = string.Concat("\"", _val, "\"");
+                        {
+                            _val = _val.Replace(_options.QuoteCharacter, _options.EscapeQuote);
+                            _val = string.Concat(_options.QuoteCharacter, _val, _options.QuoteCharacter);
+                        }
 
                         //Replace any \r or \n special characters from a new line with a space
                         if (_val.Contains("\r"))
